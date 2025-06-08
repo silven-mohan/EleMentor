@@ -24,13 +24,18 @@
 
 ```bash
 python EleMentor_Electronic_Configuration.py
+```
 
 ### Example Usage
 
 Input: 10
 Output: Electronic Configuration of Neon (Ne) is: 1s² 2s² 2p⁶ - Stable Configuration
 
-Input: Ca
+Input: Ca/Calcium
 Output: Electronic Configuration of Calcium (Ca) is: 1s² 2s² 2p⁶ 3s² 3p⁶ 4s²
+
+### Updates
+
+-Added Electronic Configurations for elements with exceptions
 
 
