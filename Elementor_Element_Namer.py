@@ -1,6 +1,46 @@
-#Dictionaries
+import tkinter as tk
+from tkinter import Menu
+#----Main----
+#Main
+def main_Elementor_Element_Namer(event=None):
+    atomic_number=user_input()
+    element_namer(atomic_number)
+    entry.delete(0, tk.END)
 
-#Elements Over 118
+#----GUI SETUP----
+root=tk.Tk()
+root.title("EleMentor")
+
+#Frame
+frame=tk.Frame(root, bg="#343541")
+frame.pack(fill=tk.BOTH, expand=True)
+#Output
+output=tk.Text(frame, height=20, width=60, bg="#343541", fg="white", font=("Consolas", 12), bd=0, highlightthickness=0)
+output.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+#Input
+entry=tk.Entry(frame, bg="#444654", fg="white", font=("Consolas", 12))
+entry.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=5)
+entry.focus_set()
+#Menu
+menu_bar=Menu(root)
+#Element Namer
+menu_bar.add_command(label="Element Name", command=main_Elementor_Element_Namer)
+
+root.config(menu=menu_bar)
+
+#----Text Colors----
+output.tag_configure("orange", foreground="#FFBF00")
+output.tag_configure("blue", foreground="#00BFFF")
+output.tag_configure("default", foreground="white")
+
+def CLI_print(msg, tag="default"):
+    output.insert(tk.END, str(msg) + '\n', tag)
+    output.see(tk.END)
+
+
+#----Dictionaries----
+
+#----Elements Over 118----
 elements_over_118={
     0:{"name":"nil", "abb":"n"},
     1:{"name":"un", "abb":"u"},
@@ -14,7 +54,7 @@ elements_over_118={
     9:{"name":"enn", "abb":"e"}
 }
 
-#Elements Under 118
+#----Elements Under 118----
 elements_under_119={
     1: {"name": "Hydrogen", "abb": "H", "char": "nonmetal"},
     2: {"name": "Helium", "abb": "He", "char": "nonmetalnoblegas"},
@@ -116,7 +156,7 @@ elements_under_119={
     98: {"name": "Californium", "abb": "Cf", "char": "metal"},
     99: {"name": "Einsteinium", "abb": "Es", "char": "metal"},
     100: {"name": "Fermium", "abb": "Fm", "char": "metal"},
-    101: {"name": "Mendelevium", "abb": "", "char": "metal"},
+    101: {"name": "Mendelevium", "abb": "Md", "char": "metal"},
     102: {"name": "Nobelium", "abb": "No", "char": "metal"},
     103: {"name": "Lawrencium", "abb": "Lr", "char": "metal"},
     104: {"name": "Rutherfordium", "abb": "Rf", "char": "metal"},
@@ -138,16 +178,17 @@ elements_under_119={
 
 #User Input
 def user_input():
-    ask_atomic_number=input("Enter the atomic number:\n\t\t\t\t\t\t\t")
+    CLI_print("Enter atomic number:")
+    ask_atomic_number=entry.get().strip()
 
     if ask_atomic_number is None:
-        print("Enter any number to continue")
-        return
+        CLI_print("Enter a number and continue")
+        return None
     atomic_number=ask_atomic_number.strip().replace(" ", "")
 
     if not atomic_number.isdigit():
-        print("Enter a number only")
-        return
+        CLI_print("Enter a number only")
+        return None
     else:
         return int(atomic_number)
 
@@ -157,41 +198,32 @@ def element_namer(atomic_number):
     #Elements under 118
     if 1<=atomic_number<=118:
         element=elements_under_119[atomic_number]
-        name=element["name"]
-        abb=element["abb"]
-        char=element["char"]
+        name, abb, char=element["name"], element["abb"], element["char"]
         suffix=""
 
         if char=="nonmetal":
             element_name=f"Element Name: {name}({abb})"
-            fg_color="orange"
-            print(element_name)
+            CLI_print(element_name, tag="orange")
         elif char=="nonmetalnoblegas":
             suffix="Nobel Gas"
-            fg_color="oranage"
             element_name=f"Element Name: {name}({abb})-{suffix}"
-            print(element_name)
+            CLI_print(element_name, tag="orange")
         elif atomic_number==43 or atomic_number==61 or 84<=atomic_number<=118:
             suffix="☢Radioactive"
-            element_name=f"Element Name; {name}({abb})-{suffix}"
-            print(element_name)
+            element_name=f"Element Name: {name}({abb})-{suffix}"
+            CLI_print(element_name,tag="default")
         elif char=="metalloid":
             element_name=f"Element Name: {name}({abb})"
-            fg_color="blue"
-            print(element_name)
+            CLI_print(element_name,tag="blue")
         else:
             element_name=f"Element Name: {name}({abb})"
-            print(element_name)
+            CLI_print(element_name, tag="default")
             
     #Elements over 118
     elif atomic_number>=119 and atomic_number<1000:
         a,b,c=map(int, str(atomic_number))
-        prefix=elements_over_118[a]["name"]
-        root=elements_over_118[b]["name"]
-        suffix=elements_over_118[c]["name"]
-        abb_a=elements_over_118[a]["abb"]
-        abb_b=elements_over_118[b]["abb"]
-        abb_c=elements_over_118[c]["abb"]
+        prefix, root, suffix=elements_over_118[a]["name"], elements_over_118[b]["name"], elements_over_118[c]["name"]    
+        abb_a, abb_b, abb_c=elements_over_118[a]["abb"], elements_over_118[b]["abb"], elements_over_118[c]["abb"]
 
         name_part=f"{prefix}{root}{suffix}ium"
         name=name_part.capitalize()
@@ -200,12 +232,11 @@ def element_namer(atomic_number):
         abb=abb_part.capitalize()
 
         element_name=f"Element Name: {name}({abb})"
-        print(element_name)
+        CLI_print(element_name, tag="default")
     else:
-        print("Enter a number less than 1000")
-        
-#Main
-def main_Elementor_Element_Namer():
-    atomic_number=user_input()
-    element_namer(atomic_number)
-main_Elementor_Element_Namer()
+        CLI_print("Enter a number less than 1000")
+
+entry.bind("<Return>", main_Elementor_Element_Namer)
+
+
+root.mainloop()
