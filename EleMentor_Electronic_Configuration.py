@@ -1,3 +1,4 @@
+import re
 import tkinter as tk
 from tkinter import Menu, simpledialog
 
@@ -32,6 +33,8 @@ root.config(menu=menu_bar)
 output.tag_configure("orange", foreground="#FFBF00")
 output.tag_configure("blue", foreground="#00BFFF")
 output.tag_configure("default", foreground="white")
+
+superscript_map = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
 
 def CLI_print(msg, tag="default"):
     output.insert(tk.END, str(msg) + '\n', tag)
@@ -161,6 +164,24 @@ elements_under_119={
     118: {"name": "Oganesson", "abb": "Og", "char": "nonmetalnoblegas"}
 }
 
+#----Elements with exceptions in electronic configuartion--
+
+elements_exception={
+    24: {"name": "Chromium", "abb": "Cr", "char": "metal"},
+    29: {"name": "Copper", "abb": "Cu", "char": "metal"},
+    41: {"name": "Niobium", "abb": "Nb", "char": "metal"},
+    42: {"name": "Molybdenum", "abb": "Mo", "char": "metal"},
+    44: {"name": "Ruthenium", "abb": "Ru", "char": "metal"},
+    45: {"name": "Rhodium", "abb": "Rh", "char": "metal"},
+    46: {"name": "Palladium", "abb": "Pd", "char": "metal"},
+    47: {"name": "Silver", "abb": "Ag", "char": "metal"},
+    57: {"name": "Lanthanum", "abb": "La", "char": "metal"},
+    58: {"name": "Cerium", "abb": "Ce", "char": "metal"},
+    64: {"name": "Gadolinium", "abb": "Gd", "char": "metal"},
+    78: {"name": "Platinum", "abb": "Pt", "char": "metal"},
+    79: {"name": "Gold", "abb": "Au", "char": "metal"},
+    89: {"name": "Actinium", "abb": "Ac", "char": "metal"}
+}
 
 def user_input(entry_input):
     new_user_input=entry_input.strip().replace(" ", "")
@@ -219,30 +240,91 @@ def user_input(entry_input):
         "f": 14
     }
 
-    configuration=[]
+    if electrons not in elements_exception:
+        configuration=[]
 
-    for orbital in subshells:
-        shell= orbital[:-1]
-        n= orbital[-1]
-        cap= capacities[n]
+        for orbital in subshells:
+            shell= orbital[:-1]
+            n= orbital[-1]
+            cap= capacities[n]
 
-        if electrons<=0:
-            break
+            if electrons<=0:
+                break
         
-        superscript_map = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
-        electrons_in_this_orbital = min(electrons, cap)
-        superscript_electrons = str(electrons_in_this_orbital).translate(superscript_map)
-        configuration.append(f"{orbital}{superscript_electrons}")
-        electrons -= electrons_in_this_orbital
+            electrons_in_this_orbital = min(electrons, cap)
+            superscript_electrons = str(electrons_in_this_orbital).translate(superscript_map)
+            configuration.append(f"{orbital}{superscript_electrons}")
+            electrons -= electrons_in_this_orbital
 
-    if char == "nonmetal":
-        CLI_print(f"Electronic Configuration of {ename}({eabb}) is: {' '.join(configuration)}", tag="orange")
-    elif char == "nonmetalnoblegas":
-        CLI_print(f"Electronic Configuration of {ename}({eabb}) is: {' '.join(configuration)} - Stable Configuration", tag="orange")
-    elif char == "metalloid":
-        CLI_print(f"Electronic Configuration of {ename}({eabb}) is: {' '.join(configuration)}", tag="blue")
+            if char == "nonmetal":
+                CLI_print(f"Electronic Configuration of {ename}({eabb}) is: {' '.join(configuration)}", tag="orange")
+            elif char == "nonmetalnoblegas":
+                CLI_print(f"Electronic Configuration of {ename}({eabb}) is: {' '.join(configuration)} - Stable Configuration", tag="orange")
+            elif char == "metalloid":
+                CLI_print(f"Electronic Configuration of {ename}({eabb}) is: {' '.join(configuration)}", tag="blue")
+            else:
+                CLI_print(f"Electronic Configuration of {ename}({eabb}) is: {' '.join(configuration)}")
+    
     else:
-        CLI_print(f"Electronic Configuration of {ename}({eabb}) is: {' '.join(configuration)}")
+        elements=elements_exception[electrons]
+        ename, eabb = elements["name"], elements["abb"]
+        
+        if electrons==24:
+            configuration="1s2 2s2 2p6 3s2 3p6 4s1 3d5"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==29:
+            configuration="1s2 2s2 2p6 3s2 3p6 4s1 3d10"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==41:
+            configuration="1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 4d4 5s1"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==42:
+            configuration="1s1 2s2 2p6 3s2 3p6 4s2 3d10 4p6 4d5 5s1"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==44:
+            configuration="1s1 2s2 2p6 3s2 3p6 4s2 3d10 4p6 4d7 5s1"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==45:
+            configuration="1s1 2s2 2p6 3s2 3p6 4s2 3d10 4p6 4d8 5s1"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==46:
+            configuration="1s1 2s2 2p6 3s2 3p6 4s2 3d10 4p6 4d10"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==47:
+            configuration="1s1 2s2 2p6 3s2 3p6 4s2 3d10 4p6 4d10 5s1"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==57:
+            configuration="1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 5d1"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==58:
+            configuration="1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f1 5d1"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==64:
+            configuration="1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f7 5d1"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==78:
+            configuration="1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s1 4f14 5d9"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==79:
+            configuration="1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s1 4f14 5d10"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
+        elif electrons==89:
+            configuration="1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 6d1"
+            E_configuration = re.sub(r'([spdf])(\d)', lambda m: m.group(1) + m.group(2).translate(superscript_map), configuration)
+            CLI_print(f"Electronic Configuration of {ename}({eabb})* is:{E_configuration}")
 
 
 root.mainloop()
