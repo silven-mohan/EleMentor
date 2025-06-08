@@ -26,3 +26,9 @@ This Python program allows users to input the atomic number of a chemical elemen
    python element_identifier.py
 2. Enter the atomic number
 3. You get the output=Element Name
+
+
+## Author: Silven Mohan
+
+## Updates
+- Added a CLI-based GUI with a menu bar for improved user interaction and navigation.
