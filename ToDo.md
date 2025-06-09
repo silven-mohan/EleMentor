@@ -1,7 +1,7 @@
-Electronic Configuration of Elements
+Electronic Configuration of Elements- Done
 
 
-Position of Element Periodic Table
+Position of Element Periodic Table- Done
 
 
 Valence Electrons
