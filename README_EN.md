@@ -7,7 +7,7 @@ This Python program allows users to input the atomic number of a chemical elemen
 - **Element classification** via color codes:
   - 🟧 Orange — Non-metal
   - 🔵 Blue — Metalloid
-  - ⚫ Black — Metal
+  - ⚪ — Metal
 - Status indicators:
   - ☢️ Radioactive
   - 🧪 Noble Gas
