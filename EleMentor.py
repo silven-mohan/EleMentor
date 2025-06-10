@@ -1,3 +1,4 @@
+import os
 import re
 import tkinter as tk
 from tkinter import Menu, simpledialog
@@ -29,9 +30,18 @@ def main_Valence_electrons(event=None):
         return
     user_input_ve(entry_input)
 
+#Icon usage
+if getattr(sys, 'frozen', False):
+    base_path=sys._MEIPASS
+else:
+    base_path=base_path = os.path.dirname(os.path.abspath(__file__))
+icon_path= os.path.join(base_path, "assets", "EleMentor_logo.ico")
+
+
 #----GUI SETUP----
 root=tk.Tk()
 root.title("EleMentor")
+root.iconbitmap(icon_path)
 
 #Frame
 frame=tk.Frame(root, bg="#343541")
@@ -861,4 +871,3 @@ def user_input_ve(entry_input):
         CLI_print(f"Valence Electrons of {ename}({eabb}) is/are: {valence_fblock_electrons}")
     
 root.mainloop()
-            
