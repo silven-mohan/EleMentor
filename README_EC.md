@@ -13,7 +13,6 @@
   - Noble gases – Orange + “Stable Configuration” tag
   - Metalloids – Blue
   - Metals – Default color
-- 🖋️ **ChatGPT-style input field**: Multiline-friendly, responsive, and modern interface.
 - 🌙 **Dark-Themed GUI**: Clean, readable interface styled for focus and clarity.
 
 ---
